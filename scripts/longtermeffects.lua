@@ -60,7 +60,7 @@ end
 
 -- Function Overrides
 function onInit()
-	local sRuleset = User.getRulesetName()
+	local sRuleset = User.getRulesetName();
 	if sRuleset == "3.5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "5E" then
 		nextRound_old = CombatManager.nextRound;
 		CombatManager.nextRound = nextRound_new;
