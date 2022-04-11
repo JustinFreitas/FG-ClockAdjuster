@@ -1173,10 +1173,10 @@
 						local nDistance = window.destination.getValue();
 						local nTraveledBefore = window.distancetraveled.getValue();
 						if nDistance &gt; nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMOnly};
+							local msg = {font = "reference-r", icon = "clock_icon", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMOnly};
 							Comm.deliverChatMessage(msg);
 						elseif nDistance &lt;= nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMOnly};
+							local msg = {font = "reference-r", icon = "clock_icon", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMOnly};
 							Comm.deliverChatMessage(msg);
 						end
 					end
@@ -1225,10 +1225,10 @@
 						local nDistance = window.destination.getValue() or 0;
 						local nTraveledBefore = window.distancetraveled.getValue() or 0;
 						if nDistance &gt; nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMOnly};
+							local msg = {font = "reference-r", icon = "clock_icon", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMOnly};
 							Comm.deliverChatMessage(msg);
 						elseif nDistance &lt;= nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMOnly};
+							local msg = {font = "reference-r", icon = "clock_icon", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMOnly};
 							Comm.deliverChatMessage(msg);
 						end
 					end

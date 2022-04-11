@@ -162,7 +162,7 @@ end
 function onTimeChangedEvent(nodeEvent, sName, nCompleted, nVisibleAll, nEventMinute, nEventHour, nEventDay, nEventMonth, nEventYear)
 	local nDifference = differenceCurrentToComponentsInMinutes(0, nEventMinute, nEventHour, nEventDay, nEventMonth, nEventYear);
 	if nCompleted == 0 and nDifference >= 0 then
-		local msg = {font = "reference-r", text = "[" .. nEventHour .. ":" .. nEventMinute .. "/" .. nEventDay .. "/" .. nEventMonth .. "/" .. nEventYear .. "] " .. sName .. "", secret = nVisibleAll == 0};
+		local msg = {font = "reference-r", icon = "clock_icon", text = "[" .. nEventHour .. ":" .. nEventMinute .. "/" .. nEventDay .. "/" .. nEventMonth .. "/" .. nEventYear .. "] " .. sName .. "", secret = nVisibleAll == 0};
 		Comm.deliverChatMessage(msg);
 		if TableManager.findTable(sName) then
 			TableManager.processTableRoll("", sName);
@@ -180,7 +180,7 @@ function onTimeChangedReminder(nodeReminder, sName, nRepeatTime, nReminderCycle,
 		local nDate = CalendarManager.getCurrentDateString();
 		local nTime = CalendarManager.getCurrentTimeString();
 		local nDateAndTime = "" .. nTime .. " " .. nDate .. "";
-		local msg = {font = "reference-r", text = "[" .. nDateAndTime .. "] " .. sName .. "", secret = nVisibleAll == 0};
+		local msg = {font = "reference-r", icon = "clock_icon", text = "[" .. nDateAndTime .. "] " .. sName .. "", secret = nVisibleAll == 0};
 		Comm.deliverChatMessage(msg);
 		if TableManager.findTable(sName) then
 			TableManager.processTableRoll("", sName);
