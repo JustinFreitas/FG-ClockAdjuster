@@ -594,7 +594,7 @@
 				<values>
 					<maximum>1</maximum>
 				</values>
-				<tooltip text="Check Weather on Time Adjust; NOTE: You must have a table for each 'Weather Wind', 'Weather Temperature', and 'Weather Precipitation'" />
+				<tooltip text="Check Weather on Time Adjust; NOTE: You must have a table for each 'Weather - Wind', 'Weather - Temperature', and 'Weather - Precipitation'" />
 				<script>
 					function onInit()
 						setValue(DB.getValue("calendar.lastcheckweather") or 0);
