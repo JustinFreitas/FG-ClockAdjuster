@@ -296,9 +296,9 @@ end
 
 function checkAndProcessWeather(bCheckWeather)
 	if bCheckWeather == 1 then
-		TableManager.processTableRoll("", "Weather Wind");
-		TableManager.processTableRoll("", "Weather Temperature");
-		TableManager.processTableRoll("", "Weather Precipitation");
+		TableManager.processTableRoll("", "Weather - Wind");
+		TableManager.processTableRoll("", "Weather - Temperature");
+		TableManager.processTableRoll("", "Weather - Precipitation");
 	end
 end
 
