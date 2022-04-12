@@ -1976,7 +1976,7 @@
 				<tooltip textres="remindercycle_tooltip" />
 			</basicnumber>
 			
-			<basicnumber name="repeattime" source="reminder.repeattime">
+			<basicnumber name="repeattime" source="repeattime">
 				<anchored to="remindercycle" width="30" height="30">
 					<top />
 					<left parent="remindercycle" anchor="right" offset="10" />
@@ -1984,18 +1984,18 @@
 				<script>
 					function onInit()
 						local nodeReminder = window.getDatabaseNode();
-						setValue(DB.getValue(nodeReminder, TimeManager.REMINDER_REPEATTIME, 0));
+						setValue(DB.getValue(nodeReminder, "repeattime", 0));
 					end
 
 					function onValueChanged()
 						local nodeReminder = window.getDatabaseNode();
-						DB.setValue(nodeReminder, TimeManager.REMINDER_REPEATTIME, "number", getValue());
+						DB.setValue(nodeReminder, "repeattime", "number", getValue());
 						window.repeattimebutton.setValue(getValue());
 					end
 				</script>
 				<invisible />
 			</basicnumber>
-			<buttoncontrol name="repeattimebutton" source="reminder.repeattime">
+			<buttoncontrol name="repeattimebutton" source="repeattime">
 				<anchored to="repeattime" width="60" height="20">
 					<top />
 					<left parent="repeattime" anchor="right" offset="10" />
@@ -2011,12 +2011,12 @@
 				<script>
 					function onInit()
 						local nodeReminder = window.getDatabaseNode();
-						setValue(DB.getValue(nodeReminder, TimeManager.REMINDER_REPEATTIME, 0));
+						setValue(DB.getValue(nodeReminder, "repeattime", 0));
 					end
 
 					function onButtonPress()
 						local nodeReminder = window.getDatabaseNode();
-						DB.setValue(nodeReminder, TimeManager.REMINDER_REPEATTIME, "number", getValue());
+						DB.setValue(nodeReminder, "repeattime", "number", getValue());
 						window.repeattime.setValue(getValue());
 					end
 				</script>
