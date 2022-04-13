@@ -1867,7 +1867,7 @@
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
 				<state icon="visibilityon" tooltipres="visibilityon" />
 			</buttonfield>
-			<basicnumber name="remindercycle" source=".remindercycle">
+			<basicnumber name="remindercycle" source="remindercycle">
 				<anchored width="40" height="20">
 					<top offset="2" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
@@ -1876,7 +1876,7 @@
 				<tabtarget prev="location" />
 				<tooltip textres="remindercycle_tooltip" />
 			</basicnumber>
-			<buttoncontrol name="repeattimebutton" source=".repeattime">
+			<buttoncontrol name="repeattimebutton" source="repeattime">
 				<anchored width="60" height="30">
 					<top offset="2" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
@@ -1902,7 +1902,7 @@
 					end
 				</script>
 			</buttoncontrol>
-			<basicnumber name="repeattime" source=".repeattime">
+			<basicnumber name="repeattime" source="repeattime">
 				<anchored width="40" height="20">
 					<top offset="2" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
