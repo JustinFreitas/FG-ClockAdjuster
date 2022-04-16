@@ -952,13 +952,13 @@
 	
 	<windowclass name="travelmanager">
 		<frame>recordsheet</frame>
-		<size width="250" height="250" />
+		<size width="250" height="200" />
 		<placement>
 			<position x="10" y="30" />
-			<size width="250" height="250" />
+			<size width="250" height="200" />
 		</placement>		
 		<sizelimits>
-			<maximum height="250" width="250" />
+			<maximum width="250" height="200" />
 		</sizelimits>		
 		<nodelete />
 		<softclose />
@@ -1305,108 +1305,7 @@
 
 						local EncounterChance = "Encounter Chance Slow Travel Pace";
 						if window.encounterchance.getValue() == 1 then
-							if REGeneratorManager then
-								local sD100xrp = "1d100";
-								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
-								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
-								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								local nEncounterChance = window.encounterchancenum.getValue();
-								local nBattleChance = window.battlechance.getValue();
-								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local aTableClasses = LibraryData.getMappings("table");
-								if nEncounterChanceResult &lt; nEncounterChance then
-									if nBattleChanceResult &lt; nBattleChance then
-								
-										Interface.openWindow("new_regenerator", "regenerator");
-										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
-										local aGeneratedNPCS = REGeneratorManager.generatePreview();
-										if REGenWin then
-											local aBiomeClasses = LibraryData.getMappings("biome");
-											local aImageClasses = LibraryData.getMappings("image");
-											local aViableBiome = {};
-											for _,ClassNode in pairs(aBiomeClasses) do
-												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
-													local vNodeNameNode = DB.getChild(vNode, "name");
-													local vName = DB.getValue(vNodeNameNode, "", "");
-													local vName = string.gsub(vName, "%W", " ");
-													
-													if string.find(sBiomeTypes, vName) then
-														local aMapListNode = DB.getChild(vNode, "maplist");
-														
-														
-														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
-															local vMapLinkNode = DB.getChild(vMap, "link");
-															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
-															local sRecordNode = DB.getChild(sRecord, "");
-															table.insert(aViableMap, sRecordNode);
-														end
-													end
-												end
-											end
-
-											local nCount = #aViableMap;
-											if nCount == 0 then
-												nCount = 1;
-											end
-
-											local sExpr = "1d" .. nCount;
-											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nCount = StringManager.evalDiceMathExpression(sExpr);
-											for k,v in pairs(aViableMap) do
-												local sPath = DB.getPath(v);
-												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
-												if k == nCount then
-													Interface.openWindow(vClass, sPath);
-												end
-											end
-
-											REGenWin.close();
-										end
-
-										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
-									else
-										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
-											local bTableRolled = false;
-											local aTableNames = {};
-											for _,TableClassNode in pairs(aTableClasses) do
-												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
-													local vTableNameNode = DB.getChild(vTableNode, "name");
-													local sTableName = DB.getValue(vTableNameNode, "", "");
-													local sTableNameOrig = sTableName;
-													local sTableName = string.lower(sTableName);
-													local sTableName = string.gsub(sTableName, "%W", " ");
-													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
-													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
-														sBiomeTypes = string.lower(sBiomeTypes);
-														if string.find(sBiomeTypes, sEncounterTableBiome) then
-															table.insert(aTableNames, sTableNameOrig);
-														end
-													end
-												end
-											end
-
-											local sTableExpr = "1d" .. #aTableNames;
-											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											local nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
-											for kTableName, vTableName in pairs(aTableNames) do
-												if kTableName == nTableCount then
-													TableManager.processTableRoll("", vTableName);
-													bTableRolled = true;
-													break;
-												end
-											end
-										end
-
-										if TableManager.findTable("Non Combat Encounter") and not bTableRolled then
-											TableManager.processTableRoll("", "Non Combat Encounter");
-										end
-									end
-								end
-							else
-								TableManager.processTableRoll("", EncounterChance);
-							end
+							TableManager.processTableRoll("", EncounterChance);
 						end
 					end
 				</script>
@@ -1437,114 +1336,7 @@
 						end
 						local EncounterChance = "Encounter Chance Normal Travel Pace";
 						if window.encounterchance.getValue() == 1 then
-							if REGeneratorManager then
-								local sD100xrp = "1d100";
-								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
-								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
-								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								local nEncounterChance = window.encounterchancenum.getValue();
-								local nBattleChance = window.battlechance.getValue();
-								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local aTableClasses = LibraryData.getMappings("table");
-								if nEncounterChanceResult &lt; nEncounterChance then
-									if nBattleChanceResult &lt; nBattleChance then
-								
-										Interface.openWindow("new_regenerator", "regenerator");
-										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
-										local aGeneratedNPCS = REGeneratorManager.generatePreview();
-										if REGenWin then
-											local aBiomeClasses = LibraryData.getMappings("biome");
-											local aImageClasses = LibraryData.getMappings("image");
-											local aViableBiome = {};
-											
-											
-											for _,ClassNode in pairs(aBiomeClasses) do
-												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
-													local vNodeNameNode = DB.getChild(vNode, "name");
-													local vName = DB.getValue(vNodeNameNode, "", "");
-													local vName = string.gsub(vName, "%W", " ");
-													
-													if string.find(sBiomeTypes, vName) then
-														local aMapListNode = DB.getChild(vNode, "maplist");
-														
-														
-														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
-															local vMapLinkNode = DB.getChild(vMap, "link");
-															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
-															local sRecordNode = DB.getChild(sRecord, "");
-															table.insert(aViableMap, sRecordNode);
-														end
-													end
-												end
-											end
-
-											local nCount = #aViableMap;
-											if nCount == 0 then
-												nCount = 1;
-											end
-
-											local sExpr = "1d" .. nCount;
-											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nCount = StringManager.evalDiceMathExpression(sExpr);
-											for k,v in pairs(aViableMap) do
-												local sPath = DB.getPath(v);
-												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
-												if k == nCount then
-													Interface.openWindow(vClass, sPath);
-												end
-											end
-
-											REGenWin.close();
-										end
-
-										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
-									else
-										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
-											local bTableRolled = false;
-											local aTableNames = {};
-											for _,TableClassNode in pairs(aTableClasses) do
-												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
-													local vTableNameNode = DB.getChild(vTableNode, "name");
-													local sTableName = DB.getValue(vTableNameNode, "", "");
-													local sTableNameOrig = sTableName;
-													local sTableName = string.lower(sTableName);
-													local sTableName = string.gsub(sTableName, "%W", " ");
-													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
-													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
-														sBiomeTypes = string.lower(sBiomeTypes);
-														if string.find(sBiomeTypes, sEncounterTableBiome) then
-															table.insert(aTableNames, sTableNameOrig);
-														end
-													end
-												end
-											end
-											local nTableNames = 0;
-											for kTableName,vTableName in pairs(aTableNames) do
-												nTableNames = nTableNames + 1;
-											end
-
-											local sTableExpr = "1d" .. nTableNames;
-											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											local nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
-											for kTableName,vTableName in pairs(aTableNames) do
-												if kTableName == nTableCount then
-													TableManager.processTableRoll("", vTableName);
-													bTableRolled = true;
-													break;
-												end
-											end
-										end
-
-										if TableManager.findTable("Non Combat Encounter") and bTableRolled == false then
-											TableManager.processTableRoll("", "Non Combat Encounter");
-										end
-									end
-								end
-							else
-								TableManager.processTableRoll("", EncounterChance);
-							end
+							TableManager.processTableRoll("", EncounterChance);
 						end
 					end
 				</script>
@@ -1577,109 +1369,7 @@
 
 						local EncounterChance = "Encounter Chance Fast Travel Pace";
 						if window.encounterchance.getValue() == 1 then
-							if REGeneratorManager then
-								local sD100xrp = "1d100";
-								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
-								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
-								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								local nEncounterChance = window.encounterchancenum.getValue();
-								local nBattleChance = window.battlechance.getValue();
-								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local aTableClasses = LibraryData.getMappings("table");
-								if nEncounterChanceResult &lt; nEncounterChance then
-									if nBattleChanceResult &lt; nBattleChance then
-										Interface.openWindow("new_regenerator", "regenerator");
-										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
-										local aGeneratedNPCS = REGeneratorManager.generatePreview();
-										if REGenWin then
-											local aBiomeClasses = LibraryData.getMappings("biome");
-											local aImageClasses = LibraryData.getMappings("image");
-											local aViableBiome = {};
-											for _,ClassNode in pairs(aBiomeClasses) do
-												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
-													local vNodeNameNode = DB.getChild(vNode, "name");
-													local vName = DB.getValue(vNodeNameNode, "", "");
-													local vName = string.gsub(vName, "%W", " ");
-													if string.find(sBiomeTypes, vName) then
-														local aMapListNode = DB.getChild(vNode, "maplist");
-														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
-															local vMapLinkNode = DB.getChild(vMap, "link");
-															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
-															local sRecordNode = DB.getChild(sRecord, "");
-															table.insert(aViableMap, sRecordNode);
-														end
-													end
-												end
-											end
-
-											local nCount = #aViableMap;
-											if nCount == 0 then
-												nCount = 1;
-											end
-
-											local sExpr = "1d" .. nCount;
-											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nCount = StringManager.evalDiceMathExpression(sExpr);
-											for k,v in pairs(aViableMap) do
-												local sPath = DB.getPath(v);
-												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
-												if k == nCount then
-													Interface.openWindow(vClass, sPath);
-												end
-											end
-
-											REGenWin.close();
-										end
-
-										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
-									else
-										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
-											local bTableRolled = false;
-											local aTableNames = {};
-											for _, TableClassNode in pairs(aTableClasses) do
-												for _, vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
-													local vTableNameNode = DB.getChild(vTableNode, "name");
-													local sTableName = DB.getValue(vTableNameNode, "", "");
-													local sTableNameOrig = sTableName;
-													sTableName = string.lower(sTableName);
-													sTableName = string.gsub(sTableName, "%W", " ");
-													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
-													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
-														sBiomeTypes = string.lower(sBiomeTypes);
-														if string.find(sBiomeTypes, sEncounterTableBiome) then
-															table.insert(aTableNames, sTableNameOrig);
-														end
-													end
-												end
-											end
-
-											local nTableNames = 0;
-											for kTableName,vTableName in pairs(aTableNames) do
-												nTableNames = nTableNames + 1;
-											end
-
-											local sTableExpr = "1d" .. nTableNames;
-											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											local nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
-											for kTableName,vTableName in pairs(aTableNames) do
-												if kTableName == nTableCount then
-													TableManager.processTableRoll("", vTableName);
-													bTableRolled = true;
-													break;
-												end
-											end
-										end
-
-										if TableManager.findTable("Non Combat Encounter") and not bTableRolled then
-											TableManager.processTableRoll("", "Non Combat Encounter");
-										end
-									end
-								end
-							else
-								TableManager.processTableRoll("", EncounterChance);
-							end
+							TableManager.processTableRoll("", EncounterChance);
 						end
 					end
 				</script>
@@ -1695,32 +1385,6 @@
 				<tooltip text="Rolls an encounter chance when using Travel Speed Buttons to the left; Note: Looks for tablenames: Encounter Chance Slow Travel Pace, Encounter Chance Normal Travel Pace, or Encounter Chance Fast Travel Pace" />
 				
 			</button_checkbox>
-			<label name="encounterchance_label">
-				<anchored to="travellabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<static text="Chances" />
-			</label>
-			<basicnumber name="encounterchancenum">
-				<anchored to="encounterchance_label" position="righthigh" offset="0,0" width="20" height="30" />
-				<tooltip text="Chance of Encounter while traveling" />
-				<maximum>100</maximum>
-				<minimum>0</minimum>
-				<script>
-					function onInit()
-						setVisible(DB.findNode("regenerator") ~= nil);
-					end
-				</script>
-			</basicnumber>
-			<basicnumber name="battlechance">
-				<anchored to="encounterchancenum" position="righthigh" offset="20,0" width="20" height="30" />
-				<maximum>100</maximum>
-				<minimum>0</minimum>
-				<tooltip text="Chance Encounter is a battle. If no battle, then rolls on table 'Non Combat Encounter' if it exists." />
-				<script>
-					function onInit()
-						setVisible(DB.findNode("regenerator") ~= nil);
-					end
-				</script>
-			</basicnumber>
 		</sheetdata>
 	</windowclass>
 	
