@@ -372,3 +372,93 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, nodeEvent)
 
 	return nodeLogEntry;
 end
+
+function TravelByPace(window)
+	local nTravelTimeUnits = math.floor(window.travelbyhours.getValue() or 0);
+	local nTravelSpeed = math.floor(window.travelspeed.getValue() or 0);
+	local nTimePassed = 0;
+	local nTravelCount = 0;
+	local bDurationUnitHours = window.perlimit.getValue() ~= 1;
+	local bDistanceUnitMiles = window.unitofmeasurement.getValue() ~= 1;
+	for i=1,nTravelTimeUnits do
+		local nDistance = (window.destination.getValue() or 0);
+		local nTraveledBefore = (window.distancetraveled.getValue() or 0);
+		if nDistance > nTraveledBefore then
+			if bDurationUnitHours then
+				CalendarManager.adjustHours(1);
+			else
+				CalendarManager.adjustDays(1);
+			end
+
+			nTimePassed = nTimePassed + 1;
+			for j=1,nTravelSpeed do
+				if nDistance > math.floor(window.distancetraveled.getValue() or 0) then
+					nTravelCount = nTravelCount + 1;
+					local nDistanceTraveled = (window.distancetraveled.getValue() or 0) + 1;
+					window.distancetraveled.setValue(nDistanceTraveled);
+				end
+			end
+		end
+	end
+
+	local sDurationUnit = "days";
+	if bDurationUnitHours then
+		sDurationUnit = "hours";
+	end
+
+	local sDistanceUnit = "kilometers";
+	if bDistanceUnitMiles then
+		sDistanceUnit = "miles";
+	end
+
+	local nDistance = window.destination.getValue() or 0;
+	local nTraveledBefore = window.distancetraveled.getValue() or 0;
+	local msg = {
+		font = "reference-r",
+		icon = "clock_icon",
+		secret = window.isgmonly.getValue() == 0
+	};
+
+	if nDistance > nTraveledBefore then
+		msg.text = "The Party has traveled " .. nTravelCount .. " " .. sDistanceUnit .. " in " .. window.travelbyhours.getValue() .. " " .. sDurationUnit
+			.. ". They have " .. window.distanceremaining.getValue() .. " " .. sDistanceUnit .. " left to go.";
+	else
+		msg.text = "The Party has traveled " .. nTravelCount .. " " .. sDistanceUnit .. " in " .. nTimePassed .. " " .. sDurationUnit .. " and has reached their destination.";
+	end
+
+	Comm.deliverChatMessage(msg);
+end
+
+function advanceTime(sTime, window)
+	local nCurrentHour = DB.getValue(CAL_CUR_HOUR, 0);
+	local nCurrentMinute = DB.getValue(CAL_CUR_MIN, 0);
+
+	local nAdvTo = 6 -- Default, 6am.
+	if sTime == "12pm" then
+		nAdvTo = 12
+	elseif sTime == "6pm" then
+		nAdvTo = 18
+	elseif sTime == "12am" then
+		nAdvTo = 0
+	end
+
+	if getCurrentDate() then
+		if nCurrentHour >= nAdvTo then
+			DB.setValue(TimeManager.CAL_CUR_HOUR, "number", nAdvTo);
+			CalendarManager.adjustDays(1);
+			if nCurrentMinute >= 1 then
+				DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
+			end
+		else
+			DB.setValue(TimeManager.CAL_CUR_HOUR, "number", nAdvTo);
+			if nCurrentMinute >= 1 then
+				DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
+			end
+		end
+
+		TimeManager.checkAndProcessWeather(window.checkweather.getValue());
+		TimeManager.checkAndOutputDate();
+		CalendarManager.outputTime();
+		TimeManager.onUpdateAddControl();
+	end
+end

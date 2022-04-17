@@ -427,28 +427,7 @@
 				<tooltip textres="desktop_adv6am_tooltip" />
 				<script>
 					function onButtonPress()
-						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
-						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
-						
-						if TimeManager.getCurrentDate() then
-							if nCurrentHour &gt;= 6 then
-								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 6);
-								CalendarManager.adjustDays(1);
-								if nCurrentMinute &gt;= 1 then
-									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
-								end
-							elseif nCurrentHour &lt; 6 then
-								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 6);
-								if nCurrentMinute &gt;= 1 then
-									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
-								end
-							end
-
-							TimeManager.checkAndProcessWeather(window.checkweather.getValue());
-							TimeManager.checkAndOutputDate();
-							CalendarManager.outputTime();
-							TimeManager.onUpdateAddControl();
-						end
+						TimeManager.advanceTime("6am", window);
 					end
 				</script>
 			</buttoncontrol>
@@ -458,28 +437,7 @@
 				<tooltip textres="desktop_adv12pm_tooltip" />
 				<script>
 					function onButtonPress()
-						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
-						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
-						
-						if TimeManager.getCurrentDate() then
-							if nCurrentHour &gt;= 12 then
-								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 12);
-								CalendarManager.adjustDays(1);
-								if nCurrentMinute &gt;= 1 then
-									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
-								end
-							elseif nCurrentHour &lt; 12 then
-								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 12);
-								if nCurrentMinute &gt;= 1 then
-									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
-								end
-							end
-
-							TimeManager.checkAndProcessWeather(window.checkweather.getValue());
-							TimeManager.checkAndOutputDate();
-							CalendarManager.outputTime();
-							TimeManager.onUpdateAddControl();
-						end
+						TimeManager.advanceTime("12pm", window);
 					end
 				</script>
 			</buttoncontrol>
@@ -489,28 +447,7 @@
 				<tooltip textres="desktop_adv6pm_tooltip" />
 				<script>
 					function onButtonPress()
-						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
-						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
-						
-						if TimeManager.getCurrentDate() then
-							if nCurrentHour &gt;= 18 then
-								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 18);
-								CalendarManager.adjustDays(1);
-								if nCurrentMinute &gt;= 1 then
-									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
-								end
-							elseif nCurrentHour &lt; 18 then
-								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 18);
-								if nCurrentMinute &gt;= 1 then
-									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
-								end
-							end
-
-							TimeManager.checkAndProcessWeather(window.checkweather.getValue());
-							TimeManager.checkAndOutputDate();
-							CalendarManager.outputTime();
-							TimeManager.onUpdateAddControl();
-						end
+						TimeManager.advanceTime("6pm", window);
 					end
 				</script>
 			</buttoncontrol>
@@ -520,28 +457,7 @@
 				<tooltip textres="desktop_adv12am_tooltip" />
 				<script>
 					function onButtonPress()
-						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
-						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
-						
-						if TimeManager.getCurrentDate() then
-							if nCurrentHour &gt;= 0 then
-								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 0);
-								CalendarManager.adjustDays(1);
-								if nCurrentMinute &gt;= 1 then
-									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
-								end
-							elseif nCurrentHour &lt; 0 then
-								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 0);
-								if nCurrentMinute &gt;= 1 then
-									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
-								end
-							end
-							
-							TimeManager.checkAndProcessWeather(window.checkweather.getValue());
-							TimeManager.checkAndOutputDate();
-							CalendarManager.outputTime();
-							TimeManager.onUpdateAddControl();
-						end
+						TimeManager.advanceTime("12am", window);
 					end
 				</script>
 			</buttoncontrol>
@@ -1110,73 +1026,9 @@
 				<anchored to="travelbylabel" position="righthigh" height="20" width="20" offset="5" />
 				<tooltip text="Travel by # of Hours/Days" />
 				<script>
-					function TravelByPace(nPaceFactor)
-						local nTravelTimeUnits = math.floor(window.travelbyhours.getValue() or 0);
-						local nTravelSpeed = math.floor(window.travelspeed.getValue() or 0);
-						local nTimePassed = 0;
-						local nTravelCount = 0;
-						local bDurationUnitHours = window.perlimit.getValue() ~= 1;
-						local bDistanceUnitMiles = window.unitofmeasurement.getValue() ~= 1;
-						if nPaceFactor ~= nil then
-							if not bDurationUnitHours then
-								nTravelTimeUnits = nTravelTimeUnits * 8;
-								bDurationUnitHours = true;
-							end
-
-							nTravelSpeed = math.ceil(nTravelSpeed / 8 * nPaceFactor);
-						end
-
-						for i=1,nTravelTimeUnits do
-							local nDistance = (window.destination.getValue() or 0);
-							local nTraveledBefore = (window.distancetraveled.getValue() or 0);
-							if nDistance &gt; nTraveledBefore then
-								if bDurationUnitHours then
-									CalendarManager.adjustHours(1);
-								else
-									CalendarManager.adjustDays(1);
-								end
-
-								nTimePassed = nTimePassed + 1;
-								for j=1,nTravelSpeed do
-									if nDistance &gt; math.floor(window.distancetraveled.getValue() or 0) then
-										nTravelCount = nTravelCount + 1;
-										local nDistanceTraveled = (window.distancetraveled.getValue() or 0) + 1;
-										window.distancetraveled.setValue(nDistanceTraveled);
-									end
-								end
-							end
-						end
-
-						local sDurationUnit = "days";
-						if bDurationUnitHours and nPaceFactor == nil then
-							sDurationUnit = "hours";
-						end
-
-						local sDistanceUnit = "kilometers";
-						if bDistanceUnitMiles then
-							sDistanceUnit = "miles";
-						end
-						
-						local nDistance = window.destination.getValue() or 0;
-						local nTraveledBefore = window.distancetraveled.getValue() or 0;
-						local msg = {
-							font = "reference-r",
-							icon = "clock_icon",
-							secret = window.isgmonly.getValue() == 0
-						};
-
-						if nDistance &gt; nTraveledBefore then
-							msg.text = "The Party has traveled " .. nTravelCount .. " " .. sDistanceUnit .. " in " .. window.travelbyhours.getValue() .. " " .. sDurationUnit
-								.. ". They have " .. window.distanceremaining.getValue() .. " " .. sDistanceUnit .. " left to go.";
-						else
-							msg.text = "The Party has traveled " .. nTravelCount .. " " .. sDistanceUnit .. " in " .. nTimePassed .. " " .. sDurationUnit .. " and has reached their destination.";
-						end
-
-						Comm.deliverChatMessage(msg);
-					end
 
 					function onDoubleClick()
-						window.travelbyhours.TravelByPace();
+						TimeManager.TravelByPace(window);
 					end
 				</script>
 			</basicnumber>
@@ -1219,7 +1071,7 @@
 				<tooltip text="Travel" />
 				<script>
 					function onButtonPress()
-						window.travelbyhours.TravelByPace();
+						TimeManager.TravelByPace(window);
 					end
 				</script>
 			</buttoncontrol>
@@ -1229,7 +1081,7 @@
 				<tooltip text="Click to Travel at a Slow Pace; NOTE: You must have a table named 'Encounter Chance Slow Travel Pace'" />
 				<script>
 					function onButtonPress()
-						window.travelbyhours.TravelByPace(0.5);
+						TimeManager.TravelByPace(window);
 
 						local EncounterChance = "Encounter Chance Slow Travel Pace";
 						if window.encounterchance.getValue() == 1 then
@@ -1244,7 +1096,7 @@
 				<tooltip text="Click to Travel at a Normal Pace; NOTE: You must have a table named 'Encounter Chance Normal Travel Pace'" />
 				<script>
 					function onButtonPress()
-						window.travelbyhours.TravelByPace(1);
+						TimeManager.TravelByPace(window);
 
 						local EncounterChance = "Encounter Chance Normal Travel Pace";
 						if window.encounterchance.getValue() == 1 then
@@ -1259,7 +1111,7 @@
 				<tooltip text="Click to Travel at a Fast Pace; NOTE: You must have a table named 'Encounter Chance Fast Travel Pace'" />
 				<script>
 					function onButtonPress()
-						window.travelbyhours.TravelByPace(2);
+						TimeManager.TravelByPace(window);
 
 						local EncounterChance = "Encounter Chance Fast Travel Pace";
 						if window.encounterchance.getValue() == 1 then
