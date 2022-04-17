@@ -380,7 +380,7 @@ function TravelByPace(window)
 	local nTravelCount = 0;
 	local bDurationUnitHours = window.perlimit.getValue() ~= 1;
 	local bDistanceUnitMiles = window.unitofmeasurement.getValue() ~= 1;
-	for i=1,nTravelTimeUnits do
+	for _=1,nTravelTimeUnits do
 		local nDistance = (window.destination.getValue() or 0);
 		local nTraveledBefore = (window.distancetraveled.getValue() or 0);
 		if nDistance > nTraveledBefore then
@@ -391,7 +391,7 @@ function TravelByPace(window)
 			end
 
 			nTimePassed = nTimePassed + 1;
-			for j=1,nTravelSpeed do
+			for _=1,nTravelSpeed do
 				if nDistance > math.floor(window.distancetraveled.getValue() or 0) then
 					nTravelCount = nTravelCount + 1;
 					local nDistanceTraveled = (window.distancetraveled.getValue() or 0) + 1;
