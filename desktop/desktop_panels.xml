@@ -1094,7 +1094,7 @@
 				<tooltip text="Time Factor of Speed" />
 				<state text="/hour" />
 				<state text="/day" />
-				<default>0</default>
+				<default>1</default>
 				<sourcefields>
 					<current>distance.perlimit</current>
 				</sourcefields>
@@ -1110,127 +1110,73 @@
 				<anchored to="travelbylabel" position="righthigh" height="20" width="20" offset="5" />
 				<tooltip text="Travel by # of Hours/Days" />
 				<script>
-					function TravelByPace(NewHourSpeed, NewDaySpeed)
-						local nValue = getValue();
-						local nDistanceTotaled = 0;
+					function TravelByPace(nPaceFactor)
+						local nTravelTimeUnits = math.floor(window.travelbyhours.getValue() or 0);
+						local nTravelSpeed = math.floor(window.travelspeed.getValue() or 0);
 						local nTimePassed = 0;
 						local nTravelCount = 0;
-						local UseSpeed = window.travelspeed.getValue()
-						local isGMOnly = window.isgmonly.getValue() == 0;
-						if window.unitofmeasurement.getValue() == 0 then
-							MilesorKilometers = "miles";
-						elseif window.unitofmeasurement.getValue() == 1 then
-							MilesorKilometers = "kilometers";
-						end
-
-						for i=1, nValue do
-							local nDistance = window.destination.getValue();
-							local nTraveledBefore = window.distancetraveled.getValue();
-							if nDistance &gt; nTraveledBefore then
-								if window.perlimit.getValue() == 0 then
-									DaysorHours = "hours";
-									CalendarManager.adjustHours(1);
-								elseif window.perlimit.getValue() == 1 then
-									DaysorHours = "days";
-									CalendarManager.adjustDays(1);
-								end
-
-								nTimePassed = nTimePassed + 1;
-								if NewHourSpeed ~= nil then
-									UseSpeed = NewHourSpeed;
-									MilesorKilometers = "miles";
-								end
-
-								if NewDaySpeed ~= nil then
-									UseSpeed = NewDaySpeed;
-									MilesorKilometers = "miles";
-									window.unitofmeasurement.setValue(0);
-									window.traveltime.setValue(0);
-								end
-
-								for j=1, UseSpeed do
-									if nDistance &gt; window.distancetraveled.getValue() then
-										nTravelCount = nTravelCount + 1;
-										nDistanceTotaled = window.distancetraveled.getValue() + 1;
-										window.distancetraveled.setValue(nDistanceTotaled);
-									end
-								end
+						local bDurationUnitHours = window.perlimit.getValue() ~= 1;
+						local bDistanceUnitMiles = window.unitofmeasurement.getValue() ~= 1;
+						if nPaceFactor ~= nil then
+							if not bDurationUnitHours then
+								nTravelTimeUnits = nTravelTimeUnits * 8;
+								bDurationUnitHours = true;
 							end
+
+							nTravelSpeed = math.ceil(nTravelSpeed / 8 * nPaceFactor);
 						end
 
-						if DB.getValue("checkweather", 0) == 1 then
-							local WeatherToday = "Weather Today";
-							
-							TableManager.processTableRoll("", WeatherToday);
-						end
-
-						if window.perlimit.getValue() == 0 then
-							DaysorHours = "hours";
-						elseif window.perlimit.getValue() == 1 then
-							DaysorHours = "days";
-						end
-						
-						local nDistance = window.destination.getValue();
-						local nTraveledBefore = window.distancetraveled.getValue();
-						if nDistance &gt; nTraveledBefore then
-							local msg = {font = "reference-r", icon = "clock_icon", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMOnly};
-							Comm.deliverChatMessage(msg);
-						elseif nDistance &lt;= nTraveledBefore then
-							local msg = {font = "reference-r", icon = "clock_icon", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMOnly};
-							Comm.deliverChatMessage(msg);
-						end
-					end
-
-					function onDoubleClick()
-						local nValue = getValue();
-						local nDistanceTotaled = 0;
-						local nTimePassed = 0;
-						local nTravelCount = 0;
-						local isGMOnly = window.isgmonly.getValue() == 0;
-						for i=1,nValue do
+						for i=1,nTravelTimeUnits do
 							local nDistance = (window.destination.getValue() or 0);
 							local nTraveledBefore = (window.distancetraveled.getValue() or 0);
 							if nDistance &gt; nTraveledBefore then
-								if window.perlimit.getValue() == 0 then
-									DaysorHours = "hours";
+								if bDurationUnitHours then
 									CalendarManager.adjustHours(1);
-								elseif window.perlimit.getValue() == 1 then
-									DaysorHours = "days";
+								else
 									CalendarManager.adjustDays(1);
 								end
 
 								nTimePassed = nTimePassed + 1;
-								for j=1,(window.travelspeed.getValue() or 0) do
-									if nDistance &gt; (window.distancetraveled.getValue() or 0) then
+								for j=1,nTravelSpeed do
+									if nDistance &gt; math.floor(window.distancetraveled.getValue() or 0) then
 										nTravelCount = nTravelCount + 1;
-										nDistanceTotaled = (window.distancetraveled.getValue() or 0) + 1;
-										window.distancetraveled.setValue(nDistanceTotaled);
+										local nDistanceTraveled = (window.distancetraveled.getValue() or 0) + 1;
+										window.distancetraveled.setValue(nDistanceTraveled);
 									end
 								end
 							end
 						end
 
-						if window.perlimit.getValue() == 0 then
-							DaysorHours = "hours";
-						elseif window.perlimit.getValue() == 1 then
-							DaysorHours = "days";
+						local sDurationUnit = "days";
+						if bDurationUnitHours and nPaceFactor == nil then
+							sDurationUnit = "hours";
 						end
 
-						if window.unitofmeasurement.getValue() == 0 then
-							MilesorKilometers = "miles";
-						elseif window.unitofmeasurement.getValue() == 1 then
-							MilesorKilometers = "kilometers";
+						local sDistanceUnit = "kilometers";
+						if bDistanceUnitMiles then
+							sDistanceUnit = "miles";
 						end
 						
 						local nDistance = window.destination.getValue() or 0;
 						local nTraveledBefore = window.distancetraveled.getValue() or 0;
+						local msg = {
+							font = "reference-r",
+							icon = "clock_icon",
+							secret = window.isgmonly.getValue() == 0
+						};
+
 						if nDistance &gt; nTraveledBefore then
-							local msg = {font = "reference-r", icon = "clock_icon", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMOnly};
-							Comm.deliverChatMessage(msg);
-						elseif nDistance &lt;= nTraveledBefore then
-							local msg = {font = "reference-r", icon = "clock_icon", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMOnly};
-							Comm.deliverChatMessage(msg);
+							msg.text = "The Party has traveled " .. nTravelCount .. " " .. sDistanceUnit .. " in " .. window.travelbyhours.getValue() .. " " .. sDurationUnit
+								.. ". They have " .. window.distanceremaining.getValue() .. " " .. sDistanceUnit .. " left to go.";
+						else
+							msg.text = "The Party has traveled " .. nTravelCount .. " " .. sDistanceUnit .. " in " .. nTimePassed .. " " .. sDurationUnit .. " and has reached their destination.";
 						end
+
+						Comm.deliverChatMessage(msg);
+					end
+
+					function onDoubleClick()
+						window.travelbyhours.TravelByPace();
 					end
 				</script>
 			</basicnumber>
@@ -1242,7 +1188,7 @@
 				<tooltip text="" />
 				<state text="hours" />
 				<state text="days" />
-				<default>0</default>
+				<default>1</default>
 				<sourcefields>
 					<current>distance.perlimit</current>
 				</sourcefields>
@@ -1273,7 +1219,7 @@
 				<tooltip text="Travel" />
 				<script>
 					function onButtonPress()
-						window.travelbyhours.onDoubleClick();
+						window.travelbyhours.TravelByPace();
 					end
 				</script>
 			</buttoncontrol>
@@ -1282,26 +1228,8 @@
 				<icon normal="atob_button" pressed="atob_button_down" />
 				<tooltip text="Click to Travel at a Slow Pace; NOTE: You must have a table named 'Encounter Chance Slow Travel Pace'" />
 				<script>
-					function onInit()
-						local sRuleset = User.getRulesetName();
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
-							bLong = false;
-						elseif sRuleset == "5E" then
-							bLong = true;
-						else
-							setVisible(false);
- 						end
-					end
-				
 					function onButtonPress()
-						local aViableMap = {};
-						local NewHourSpeed = 2;
-						local NewDaySpeed = 18;
-						if window.perlimit.getValue() == 0 then
-							window.travelbyhours.TravelByPace(NewHourSpeed);
-						elseif window.perlimit.getValue() == 1 then
-							window.travelbyhours.TravelByPace(NewDaySpeed);
-						end
+						window.travelbyhours.TravelByPace(0.5);
 
 						local EncounterChance = "Encounter Chance Slow Travel Pace";
 						if window.encounterchance.getValue() == 1 then
@@ -1315,25 +1243,9 @@
 				<icon normal="atob_button" pressed="atob_button_down" />
 				<tooltip text="Click to Travel at a Normal Pace; NOTE: You must have a table named 'Encounter Chance Normal Travel Pace'" />
 				<script>
-					function onInit()
-						sRuleset = User.getRulesetName();
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
-							bLong = false;
-						elseif sRuleset == "5E" then
-							bLong = true;
-						else
-							setVisible(false);
- 						end
-					end
 					function onButtonPress()
-						local aViableMap = {};
-						local NewHourSpeed = 3;
-						local NewDaySpeed = 24;
-						if window.perlimit.getValue() == 0 then
-							window.travelbyhours.TravelByPace(NewHourSpeed);
-						elseif window.perlimit.getValue() == 1 then
-							window.travelbyhours.TravelByPace(NewDaySpeed);
-						end
+						window.travelbyhours.TravelByPace(1);
+
 						local EncounterChance = "Encounter Chance Normal Travel Pace";
 						if window.encounterchance.getValue() == 1 then
 							TableManager.processTableRoll("", EncounterChance);
@@ -1346,26 +1258,8 @@
 				<icon normal="atob_button" pressed="atob_button_down" />
 				<tooltip text="Click to Travel at a Fast Pace; NOTE: You must have a table named 'Encounter Chance Fast Travel Pace'" />
 				<script>
-					function onInit()
-						local sRuleset = User.getRulesetName();
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
-							bLong = false;
-						elseif sRuleset == "5E" then
-							bLong = true;
-						else
-							setVisible(false);
- 						end
-					end
-
 					function onButtonPress()
-						local aViableMap = {};
-						local NewHourSpeed = 4;
-						local NewDaySpeed = 30;
-						if window.perlimit.getValue() == 0 then
-							window.travelbyhours.TravelByPace(NewHourSpeed);
-						elseif window.perlimit.getValue() == 1 then
-							window.travelbyhours.TravelByPace(NewDaySpeed);
-						end
+						window.travelbyhours.TravelByPace(2);
 
 						local EncounterChance = "Encounter Chance Fast Travel Pace";
 						if window.encounterchance.getValue() == 1 then
