@@ -187,6 +187,13 @@ function onTimeChangedReminder(nodeReminder, sName, nRepeatTime, nReminderCycle,
 	end
 end
 
+function outputDateAndTime()
+	local msg = {sender = "", font = "chatfont", icon = "portrait_gm_token", mode = "story"};
+	msg.text = Interface.getString("message_calendardate") .. " " .. CalendarManager.getCurrentDateString() .. ".";
+	msg.text = msg.text .. "\r" .. Interface.getString("message_calendartime") .. " " .. CalendarManager.getCurrentTimeString() .. ".";
+	Comm.deliverChatMessage(msg);
+end
+
 --- Time conversion functions
 function convertHoursToMinutes(nNumber)
 	return nNumber * 60;

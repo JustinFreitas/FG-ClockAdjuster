@@ -99,6 +99,11 @@
 			<label name="currentphase">
 				<anchored to="currentminute" position="righthigh" offset="10" width="20" />
 				<center />
+				<script>
+					function onDoubleClick()
+						TimeManager.outputDateAndTime();
+					end
+				</script>
 			</label>
 			<label name="currentday">
 				<anchored to="currentphase" position="righthigh" offset="10" width="20" />
