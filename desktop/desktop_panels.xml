@@ -42,6 +42,7 @@
 					<left anchor="left" offset="13" />
 					<top offset="26" />
 				</anchored>
+				<tooltip textres="desktop_currenthour_tooltip" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -93,6 +94,15 @@
 						setValue(string.format("%2d", nHour));
 						window.currentphase.setValue(sPhase);
 					end
+
+					function onWheel(n)
+						if not Input.isControlPressed() then
+							return false;
+						end
+
+						CalendarManager.adjustHours(n);
+						return true;
+					end
 				</script>
 			</label>
 			<label name="timesep">
@@ -101,6 +111,7 @@
 			</label>
 			<label name="currentminute">
 				<anchored to="currenthour" position="righthigh" offset="14" width="20" height="16" />
+				<tooltip textres="desktop_currentminute_tooltip" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -116,6 +127,15 @@
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue(TimeManager.CAL_CUR_MIN, 0)));
 					end
+
+					function onWheel(n)
+						if not Input.isControlPressed() then
+							return false;
+						end
+						
+						CalendarManager.adjustMinutes(n);
+						return true;
+					end
 				</script>
 			</label>
 			<label name="currentphase">
@@ -124,8 +144,7 @@
 			</label>
 			<label name="currentday">
 				<anchored to="currentphase" position="righthigh" offset="10" width="20" height="16" />
-								<tooltip textres="desktop_addyears_tooltip" />
-
+				<tooltip textres="desktop_currentday_tooltip" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -141,10 +160,20 @@
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue(TimeManager.CAL_CUR_DAY, 0)));
 					end
+
+					function onWheel(n)
+						if not Input.isControlPressed() then
+							return false;
+						end
+						
+						CalendarManager.adjustDays(n);
+						return true;
+					end
 				</script>
 			</label>
 			<label name="currentmonth">
 				<anchored to="currentday" position="righthigh" offset="15" width="20" height="16" />
+				<tooltip textres="desktop_currentmonth_tooltip" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -160,10 +189,20 @@
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue(TimeManager.CAL_CUR_MONTH, 0)));
 					end
+
+					function onWheel(n)
+						if not Input.isControlPressed() then
+							return false;
+						end
+						
+						CalendarManager.adjustMonths(n);
+						return true;
+					end
 				</script>
 			</label>
 			<label name="currentyear">
 				<anchored to="currentmonth" position="righthigh" offset="10" width="50" height="16" />
+				<tooltip textres="desktop_currentyear_tooltip" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -178,6 +217,15 @@
 
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue(TimeManager.CAL_CUR_YEAR, 0)));
+					end
+
+					function onWheel(n)
+						if not Input.isControlPressed() then
+							return false;
+						end
+						
+						CalendarManager.adjustYears(n);
+						return true;
 					end
 				</script>
 			</label>
