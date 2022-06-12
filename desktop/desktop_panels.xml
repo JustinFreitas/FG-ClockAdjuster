@@ -246,7 +246,7 @@
 							if nCurYear == nYear and
 							   nCurMonth == nMonth and
 							   nCurDay == nDay then
-							   Interface.openWindow("advlogentry", v);
+							   Interface.toggleWindow("advlogentry", v);
 							   bFound = true;
 							   break;
 							end
@@ -259,7 +259,7 @@
 							DB.setValue(nodeEvent, "year", "number", nCurYear);
 							DB.setValue(nodeEvent, "month", "number", nCurMonth);
 							DB.setValue(nodeEvent, "day", "number", nCurDay);
-							Interface.openWindow("advlogentry", nodeEvent);
+							Interface.toggleWindow("advlogentry", nodeEvent);
 						end
 					end
 				</script>
@@ -420,7 +420,7 @@
 				<tooltip text="Click to show all logs" />
 				<script>
 					function onButtonPress()
-						Interface.openWindow("loglist", "calendar.log");
+						Interface.toggleWindow("loglist", "calendar.log");
 					end
 				</script>
 			</buttoncontrol>
