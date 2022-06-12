@@ -18,4 +18,10 @@
 	<icon name="atob_button_down" file="graphics/icons/atob_down.png" />
 	<icon name="reminder_button" file="graphics/icons/reminder.png" />
 	<icon name="reminder_button_down" file="graphics/icons/reminder_down.png" />
+	<icon name="doc" file="graphics/icons/doc.png" />
+	<icon name="doc_down" file="graphics/icons/doc_down.png" />
+	<icon name="today" file="graphics/icons/today.png" />
+	<icon name="today_down" file="graphics/icons/today_down.png" />
+	<icon name="all_logs" file="graphics/icons/all_logs.png" />
+	<icon name="all_logs_down" file="graphics/icons/all_logs_down.png" />
 </root>

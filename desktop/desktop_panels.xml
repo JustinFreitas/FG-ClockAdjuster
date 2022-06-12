@@ -15,10 +15,32 @@
 		<size width="260" height="110" />
 		<noclose />
 		<sheetdata>
+			<label name="title">
+				<anchored position="insidetopleft" width="212">
+					<left anchor="left" offset="10" />
+					<top offset="4" />
+				</anchored>
+				<static>Clock Adjuster v2.4.4 FGC/FGU</static>
+				<script>
+					function onDoubleClick()
+						TimeManager.outputDateAndTime();
+					end
+				</script>
+			</label>
+			<buttoncontrol name="showdatetime">
+				<anchored to="title" position="righthigh" offset="8,2" width="18" height="18" />
+				<icon normal="today" pressed="today_down" />
+				<tooltip text="Click to output current game date and time to chat" />
+				<script>
+					function onButtonPress()
+						TimeManager.outputDateAndTime();
+					end
+				</script>
+			</buttoncontrol>
 			<label name="currenthour">
-				<anchored position="insidetopleft" width="20">
-					<left anchor="left" offset="15" />
-					<top offset="22" />
+				<anchored position="insidetopleft" width="20" height="16">
+					<left anchor="left" offset="13" />
+					<top offset="26" />
 				</anchored>
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
@@ -74,11 +96,11 @@
 				</script>
 			</label>
 			<label name="timesep">
-				<anchored to="currenthour" position="righthigh" offset="5" />
+				<anchored to="currenthour" position="righthigh" offset="5,-2" />
 				<static>:</static>
 			</label>
 			<label name="currentminute">
-				<anchored to="timesep" position="righthigh" offset="6" width="20" />
+				<anchored to="currenthour" position="righthigh" offset="14" width="20" height="16" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -97,16 +119,13 @@
 				</script>
 			</label>
 			<label name="currentphase">
-				<anchored to="currentminute" position="righthigh" offset="10" width="20" />
+				<anchored to="currentminute" position="righthigh" offset="10" width="20" height="16" />
 				<center />
-				<script>
-					function onDoubleClick()
-						TimeManager.outputDateAndTime();
-					end
-				</script>
 			</label>
 			<label name="currentday">
-				<anchored to="currentphase" position="righthigh" offset="10" width="20" />
+				<anchored to="currentphase" position="righthigh" offset="10" width="20" height="16" />
+								<tooltip textres="desktop_addyears_tooltip" />
+
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -125,7 +144,7 @@
 				</script>
 			</label>
 			<label name="currentmonth">
-				<anchored to="currentday" position="righthigh" offset="15" width="20" />
+				<anchored to="currentday" position="righthigh" offset="15" width="20" height="16" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -144,7 +163,7 @@
 				</script>
 			</label>
 			<label name="currentyear">
-				<anchored to="currentmonth" position="righthigh" offset="10" width="50" />
+				<anchored to="currentmonth" position="righthigh" offset="10" width="50" height="16" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -162,11 +181,45 @@
 					end
 				</script>
 			</label>
-			
+			<buttoncontrol name="showcurrentlog">
+				<anchored to="currentyear" position="righthigh" offset="8,-1" width="18" height="18" />
+				<icon normal="doc" pressed="doc_down" />
+				<tooltip text="Click to show the current log" />
+				<script>
+					function onButtonPress()
+						local nCurYear = DB.getValue("calendar.current.year", 0);
+						local nCurMonth = DB.getValue("calendar.current.month", 0);
+						local nCurDay = DB.getValue("calendar.current.day", 0);
+						local bFound = false;
+						for _,v in pairs(DB.getChildren("calendar.log")) do
+							local nYear = DB.getValue(v, "year", 0);
+							local nMonth = DB.getValue(v, "month", 0);
+							local nDay = DB.getValue(v, "day", 0);
+							if nCurYear == nYear and
+							   nCurMonth == nMonth and
+							   nCurDay == nDay then
+							   Interface.openWindow("advlogentry", v);
+							   bFound = true;
+							   break;
+							end
+						end
+
+						if not bFound then
+							local nodeLog = DB.createNode("calendar.log");
+							local nodeEvent = nodeLog.createChild();					
+							DB.setValue(nodeEvent, "epoch", "string", DB.getValue("calendar.current.epoch", ""));
+							DB.setValue(nodeEvent, "year", "number", nCurYear);
+							DB.setValue(nodeEvent, "month", "number", nCurMonth);
+							DB.setValue(nodeEvent, "day", "number", nCurDay);
+							Interface.openWindow("advlogentry", nodeEvent);
+						end
+					end
+				</script>
+			</buttoncontrol>
 			<basicnumber name="addhour" source="addhour">
 				<anchored to="currenthour" width="20">
 					<left anchor="left" offset="0" />
-					<top anchor="bottom" offset="10" />
+					<top anchor="bottom" offset="8" />
 				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_addhour_tooltip" />
@@ -196,11 +249,11 @@
 				</script>
 			</basicnumber>
 			<label name="timesep2">
-				<anchored to="addhour" position="righthigh" offset="5" />
+				<anchored to="addhour" position="righthigh" offset="5,-2" />
 				<static>:</static>
 			</label>
 			<basicnumber name="addminute" source="addminute">
-				<anchored to="timesep2" position="righthigh" offset="6" width="20" />
+				<anchored to="addhour" position="righthigh" offset="14" width="20" />
 				<min>0</min>
 				<tooltip textres="desktop_addminute_tooltip" />
 				<script>
@@ -231,7 +284,7 @@
 			<basicnumber name="addday" source="addday">
 				<anchored to="currentday" width="20">
 					<left anchor="left" offset="0" />
-					<top anchor="bottom" offset="10" />
+					<top anchor="bottom" offset="8" />
 				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_addday_tooltip" />
@@ -313,9 +366,19 @@
 					end
 				</script>
 			</basicnumber>
+			<buttoncontrol name="showalllogs">
+				<anchored to="addyear" position="righthigh" offset="8,-3" width="18" height="18" />
+				<icon normal="all_logs" pressed="all_logs_down" />
+				<tooltip text="Click to show all logs" />
+				<script>
+					function onButtonPress()
+						Interface.openWindow("loglist", "calendar.log");
+					end
+				</script>
+			</buttoncontrol>
 			
 			<label name="addall">
-				<anchored to="addminute" position="righthigh" offset="9" width="25" />
+				<anchored to="addminute" position="righthigh" offset="8,-2" width="25" />
 				<static textres="desktop_panel_add" />
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>
@@ -427,7 +490,7 @@
 			</basicnumber>
 			
 			<buttoncontrol name="adv6am">
-				<anchored to="shortrest" position="righthigh" offset="10,0" width="20" height="20" />
+				<anchored to="shortrest" position="righthigh" offset="10,-2" width="20" height="20" />
 				<icon normal="6AM_Dark" pressed="6AM_Dark_down" />
 				<tooltip textres="desktop_adv6am_tooltip" />
 				<script>

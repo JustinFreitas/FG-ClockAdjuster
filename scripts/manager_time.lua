@@ -187,9 +187,11 @@ function onTimeChangedReminder(nodeReminder, sName, nRepeatTime, nReminderCycle,
 	end
 end
 
+function rtrim(s) return (s:gsub("%s*$", "")) end
+
 function outputDateAndTime()
 	local msg = {sender = "", font = "chatfont", icon = "portrait_gm_token", mode = "story"};
-	msg.text = Interface.getString("message_calendardate") .. " " .. CalendarManager.getCurrentDateString() .. ".";
+	msg.text = Interface.getString("message_calendardate") .. " " .. rtrim(CalendarManager.getCurrentDateString()) .. ".";
 	msg.text = msg.text .. "\r" .. Interface.getString("message_calendartime") .. " " .. CalendarManager.getCurrentTimeString() .. ".";
 	Comm.deliverChatMessage(msg);
 end
