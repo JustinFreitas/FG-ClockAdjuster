@@ -20,7 +20,7 @@
 					<left anchor="left" offset="10" />
 					<top offset="4" />
 				</anchored>
-				<static>Clock Adjuster v2.4.4 FGC/FGU</static>
+				<static>Clock Adjuster v2.4.5 FGC/FGU</static>
 				<script>
 					function onDoubleClick()
 						TimeManager.outputDateAndTime();
