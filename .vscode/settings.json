@@ -1,0 +1,26 @@
+{
+    "Lua.diagnostics.globals": [
+        "DB",
+        "ChatManager",
+        "Comm",
+        "Interface",
+        "CalendarManager",
+        "Session",
+        "CombatManager",
+        "EffectManager",
+        "StringManager",
+        "ActorHealthManager",
+        "ActorManager",
+        "TimeManager",
+        "OptionsManager",
+        "User",
+        "CombatManager2",
+        "EffectManager35E",
+        "EffectManager5E",
+        "TableManager",
+        "LongTermEffects"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global"
+    ]
+}
