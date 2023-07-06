@@ -5,7 +5,7 @@
 <root version="3.0">	
 	<panel name="date" modes="host">
 		<class>chattime</class>
-		<bounds>10,100,260,110</bounds>
+		<bounds>10,100,260,100</bounds>
 		<dynamic />
 		<locked />
 	</panel>
@@ -15,12 +15,35 @@
 		<size width="260" height="110" />
 		<noclose />
 		<sheetdata>
-			<label name="title">
-				<anchored position="insidetopleft" width="212">
-					<left anchor="left" offset="10" />
-					<top offset="4" />
+			<genericcontrol name="topleftanchor">
+				<anchored>
+					<top />
+					<left />
+                    <size>
+                        <width>0</width>
+                        <height>0</height>
+                    </size>
 				</anchored>
-				<static>Clock Adjuster v2.4.5 FGC/FGU</static>
+				<invisible />
+			</genericcontrol>
+			<label name="title">
+				<anchored>
+                    <left>
+                        <parent>topleftanchor</parent>
+                        <anchor>right</anchor>
+                        <offset>12</offset>
+                    </left>
+                    <top>
+                        <parent>topleftanchor</parent>
+                        <anchor>bottom</anchor>
+                        <offset>9</offset>
+                    </top>
+                    <size>
+                        <width>210</width>
+                        <height>18</height>
+                    </size>
+				</anchored>
+                <static>Clock Adjuster v2.4.5 FGC/FGU</static>
 				<script>
 					function onDoubleClick()
 						TimeManager.outputDateAndTime();
@@ -28,7 +51,22 @@
 				</script>
 			</label>
 			<buttoncontrol name="showdatetime">
-				<anchored to="title" position="righthigh" offset="8,2" width="18" height="18" />
+				<anchored>
+                    <left>
+                        <parent>title</parent>
+                        <anchor>right</anchor>
+                        <offset>12</offset>
+                    </left>
+                    <top>
+                        <parent>title</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>18</width>
+                        <height>18</height>
+                    </size>
+				</anchored>
 				<icon normal="today" pressed="today_down" />
 				<tooltip text="Click to output current game date and time to chat" />
 				<script>
@@ -38,14 +76,26 @@
 				</script>
 			</buttoncontrol>
 			<label name="currenthour">
-				<anchored position="insidetopleft" width="20" height="16">
-					<left anchor="left" offset="13" />
-					<top offset="26" />
+				<anchored>
+                    <left>
+                        <parent>title</parent>
+                        <anchor>left</anchor>
+                        <offset>2</offset>
+                    </left>
+                    <top>
+                        <parent>title</parent>
+                        <anchor>bottom</anchor>
+                        <offset>2</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
 				</anchored>
 				<tooltip textres="desktop_currenthour_tooltip" />
-				<frame name="fieldlight" offset="7,5,7,5" />
+				<frame name="fieldlight" offset="8,5,8,4" />
 				<stateframe>
-					<hover name="fieldfocus" offset="7,5,7,5" />
+					<hover name="fieldfocus" offset="8,5,8,4" />
 				</stateframe>
 				<readonly />
 				<center />
@@ -106,15 +156,45 @@
 				</script>
 			</label>
 			<label name="timesep">
-				<anchored to="currenthour" position="righthigh" offset="5,-2" />
+				<anchored>
+                    <left>
+                        <parent>currenthour</parent>
+                        <anchor>right</anchor>
+                        <offset>7</offset>
+                    </left>
+                    <top>
+                        <parent>currenthour</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>5</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<static>:</static>
 			</label>
 			<label name="currentminute">
-				<anchored to="currenthour" position="righthigh" offset="14" width="20" height="16" />
+				<anchored>
+                    <left>
+                        <parent>currenthour</parent>
+                        <anchor>right</anchor>
+                        <offset>18</offset>
+                    </left>
+                    <top>
+                        <parent>currenthour</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<tooltip textres="desktop_currentminute_tooltip" />
-				<frame name="fieldlight" offset="7,5,7,5" />
+				<frame name="fieldlight" offset="8,5,8,4" />
 				<stateframe>
-					<hover name="fieldfocus" offset="7,5,7,5" />
+					<hover name="fieldfocus" offset="8,5,8,4" />
 				</stateframe>
 				<readonly />
 				<center />
@@ -139,15 +219,45 @@
 				</script>
 			</label>
 			<label name="currentphase">
-				<anchored to="currentminute" position="righthigh" offset="10" width="20" height="16" />
+				<anchored>
+                    <left>
+                        <parent>currentminute</parent>
+                        <anchor>right</anchor>
+                        <offset>12</offset>
+                    </left>
+                    <top>
+                        <parent>currentminute</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<center />
 			</label>
 			<label name="currentday">
-				<anchored to="currentphase" position="righthigh" offset="10" width="20" height="16" />
+				<anchored>
+                    <left>
+                        <parent>currentphase</parent>
+                        <anchor>right</anchor>
+                        <offset>12</offset>
+                    </left>
+                    <top>
+                        <parent>currentphase</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<tooltip textres="desktop_currentday_tooltip" />
-				<frame name="fieldlight" offset="7,5,7,5" />
+				<frame name="fieldlight" offset="8,5,8,4" />
 				<stateframe>
-					<hover name="fieldfocus" offset="7,5,7,5" />
+					<hover name="fieldfocus" offset="8,5,8,4" />
 				</stateframe>
 				<readonly />
 				<center />
@@ -172,11 +282,26 @@
 				</script>
 			</label>
 			<label name="currentmonth">
-				<anchored to="currentday" position="righthigh" offset="15" width="20" height="16" />
+				<anchored>
+                    <left>
+                        <parent>currentday</parent>
+                        <anchor>right</anchor>
+                        <offset>14</offset>
+                    </left>
+                    <top>
+                        <parent>currentday</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<tooltip textres="desktop_currentmonth_tooltip" />
-				<frame name="fieldlight" offset="7,5,7,5" />
+				<frame name="fieldlight" offset="8,5,8,4" />
 				<stateframe>
-					<hover name="fieldfocus" offset="7,5,7,5" />
+					<hover name="fieldfocus" offset="8,5,8,4" />
 				</stateframe>
 				<readonly />
 				<center />
@@ -201,11 +326,26 @@
 				</script>
 			</label>
 			<label name="currentyear">
-				<anchored to="currentmonth" position="righthigh" offset="10" width="50" height="16" />
+				<anchored>
+                    <left>
+                        <parent>currentmonth</parent>
+                        <anchor>right</anchor>
+                        <offset>14</offset>
+                    </left>
+                    <top>
+                        <parent>currentmonth</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>40</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<tooltip textres="desktop_currentyear_tooltip" />
-				<frame name="fieldlight" offset="7,5,7,5" />
+				<frame name="fieldlight" offset="8,5,8,4" />
 				<stateframe>
-					<hover name="fieldfocus" offset="7,5,7,5" />
+					<hover name="fieldfocus" offset="8,5,8,4" />
 				</stateframe>
 				<readonly />
 				<center />
@@ -230,7 +370,22 @@
 				</script>
 			</label>
 			<buttoncontrol name="showcurrentlog">
-				<anchored to="currentyear" position="righthigh" offset="8,-1" width="18" height="18" />
+				<anchored>
+                    <left>
+                        <parent>showdatetime</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>showdatetime</parent>
+                        <anchor>bottom</anchor>
+                        <offset>1</offset>
+                    </top>
+                    <size>
+                        <width>18</width>
+                        <height>18</height>
+                    </size>
+				</anchored>
 				<icon normal="doc" pressed="doc_down" />
 				<tooltip text="Click to show the current log" />
 				<script>
@@ -265,12 +420,28 @@
 				</script>
 			</buttoncontrol>
 			<basicnumber name="addhour" source="addhour">
-				<anchored to="currenthour" width="20">
-					<left anchor="left" offset="0" />
-					<top anchor="bottom" offset="8" />
+				<anchored>
+                    <left>
+                        <parent>currenthour</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>currenthour</parent>
+                        <anchor>bottom</anchor>
+                        <offset>5</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
 				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_addhour_tooltip" />
+				<frame name="fieldlight" offset="8,5,8,4" />
+				<stateframe>
+					<hover name="fieldfocus" offset="8,5,8,4" />
+				</stateframe>
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS)) or 0);
@@ -297,13 +468,47 @@
 				</script>
 			</basicnumber>
 			<label name="timesep2">
-				<anchored to="addhour" position="righthigh" offset="5,-2" />
+				<anchored>
+                    <left>
+                        <parent>timesep</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>addhour</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>5</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<static>:</static>
 			</label>
 			<basicnumber name="addminute" source="addminute">
-				<anchored to="addhour" position="righthigh" offset="14" width="20" />
+				<anchored>
+                    <left>
+                        <parent>currentminute</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>addhour</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_addminute_tooltip" />
+				<frame name="fieldlight" offset="8,5,8,4" />
+				<stateframe>
+					<hover name="fieldfocus" offset="8,5,8,4" />
+				</stateframe>
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES)) or 0);
@@ -330,12 +535,28 @@
 			</basicnumber>
 			
 			<basicnumber name="addday" source="addday">
-				<anchored to="currentday" width="20">
-					<left anchor="left" offset="0" />
-					<top anchor="bottom" offset="8" />
+				<anchored>
+                    <left>
+                        <parent>currentday</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>currentday</parent>
+                        <anchor>bottom</anchor>
+                        <offset>4</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
 				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_addday_tooltip" />
+				<frame name="fieldlight" offset="8,5,8,4" />
+				<stateframe>
+					<hover name="fieldfocus" offset="8,5,8,4" />
+				</stateframe>
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS)) or 0);
@@ -361,9 +582,28 @@
 				</script>
 			</basicnumber>
 			<basicnumber name="addmonth" source="addmonth">
-				<anchored to="addday" position="righthigh" offset="15" width="20" />
+				<anchored>
+                    <left>
+                        <parent>currentmonth</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>currentmonth</parent>
+                        <anchor>bottom</anchor>
+                        <offset>4</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_addmonth_tooltip" />
+				<frame name="fieldlight" offset="8,5,8,4" />
+				<stateframe>
+					<hover name="fieldfocus" offset="8,5,8,4" />
+				</stateframe>
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS)) or 0);
@@ -389,9 +629,28 @@
 				</script>
 			</basicnumber>
 			<basicnumber name="addyear" source="addyear">
-				<anchored to="addmonth" position="righthigh" offset="10" width="50" />
+				<anchored>
+                    <left>
+                        <parent>currentyear</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>currentyear</parent>
+                        <anchor>bottom</anchor>
+                        <offset>4</offset>
+                    </top>
+                    <size>
+                        <width>40</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_addyears_tooltip" />
+				<frame name="fieldlight" offset="8,5,8,4" />
+				<stateframe>
+					<hover name="fieldfocus" offset="8,5,8,4" />
+				</stateframe>
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS)) or 0);
@@ -415,7 +674,22 @@
 				</script>
 			</basicnumber>
 			<buttoncontrol name="showalllogs">
-				<anchored to="addyear" position="righthigh" offset="8,-3" width="18" height="18" />
+				<anchored>
+                    <left>
+                        <parent>showcurrentlog</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>showcurrentlog</parent>
+                        <anchor>bottom</anchor>
+                        <offset>2</offset>
+                    </top>
+                    <size>
+                        <width>18</width>
+                        <height>18</height>
+                    </size>
+				</anchored>
 				<icon normal="all_logs" pressed="all_logs_down" />
 				<tooltip text="Click to show all logs" />
 				<script>
@@ -453,12 +727,28 @@
 			</label>
 			
 			<basicnumber name="longrest">
-				<anchored to="addhour" width="20">
-					<left anchor="left" offset="0" />
-					<top anchor="bottom" offset="10" />
+				<anchored>
+                    <left>
+                        <parent>addhour</parent>
+                        <anchor>left</anchor>
+                        <offset>0</offset>
+                    </left>
+                    <top>
+                        <parent>addhour</parent>
+                        <anchor>bottom</anchor>
+                        <offset>6</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
 				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
+				<frame name="fieldlight" offset="8,5,8,4" />
+				<stateframe>
+					<hover name="fieldfocus" offset="8,5,8,4" />
+				</stateframe>
 				<script>
 					local bIsbLong = false;
 
@@ -496,12 +786,28 @@
 			</basicnumber>
 			
 			<basicnumber name="shortrest">
-				<anchored to="addminute" width="20">
-					<left anchor="left" offset="0" />
-					<top anchor="bottom" offset="10" />
+				<anchored>
+                    <left>
+                        <parent>longrest</parent>
+                        <anchor>right</anchor>
+                        <offset>12</offset>
+                    </left>
+                    <top>
+                        <parent>longrest</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>16</height>
+                    </size>
 				</anchored>
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
+				<frame name="fieldlight" offset="8,5,8,4" />
+				<stateframe>
+					<hover name="fieldfocus" offset="8,5,8,4" />
+				</stateframe>
 				<script>
 					local bIsbShort = false;
 
@@ -538,7 +844,22 @@
 			</basicnumber>
 			
 			<buttoncontrol name="adv6am">
-				<anchored to="shortrest" position="righthigh" offset="10,-2" width="20" height="20" />
+				<anchored>
+                    <left>
+                        <parent>shortrest</parent>
+                        <anchor>right</anchor>
+                        <offset>9</offset>
+                    </left>
+                    <top>
+                        <parent>shortrest</parent>
+                        <anchor>top</anchor>
+                        <offset>-2</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+				</anchored>
 				<icon normal="6AM_Dark" pressed="6AM_Dark_down" />
 				<tooltip textres="desktop_adv6am_tooltip" />
 				<script>
@@ -548,7 +869,22 @@
 				</script>
 			</buttoncontrol>
 			<buttoncontrol name="adv12pm">
-				<anchored to="adv6am" position="righthigh" offset="2,0" width="20" height="20" />
+				<anchored>
+                    <left>
+                        <parent>adv6am</parent>
+                        <anchor>right</anchor>
+                        <offset>3</offset>
+                    </left>
+                    <top>
+                        <parent>adv6am</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+				</anchored>
 				<icon normal="12PM_Dark" pressed="12PM_Dark_down" />
 				<tooltip textres="desktop_adv12pm_tooltip" />
 				<script>
@@ -558,7 +894,22 @@
 				</script>
 			</buttoncontrol>
 			<buttoncontrol name="adv6pm">
-				<anchored to="adv12pm" position="righthigh" offset="2,0" width="20" height="20" />
+				<anchored>
+                    <left>
+                        <parent>adv12pm</parent>
+                        <anchor>right</anchor>
+                        <offset>3</offset>
+                    </left>
+                    <top>
+                        <parent>adv12pm</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+				</anchored>
 				<icon normal="6PM_Dark" pressed="6PM_Dark_down" />
 				<tooltip textres="desktop_adv6pm_tooltip" />
 				<script>
@@ -568,7 +919,22 @@
 				</script>
 			</buttoncontrol>
 			<buttoncontrol name="adv12am">
-				<anchored to="adv6pm" position="righthigh" offset="2,0" width="20" height="20" />
+				<anchored>
+                    <left>
+                        <parent>adv6pm</parent>
+                        <anchor>right</anchor>
+                        <offset>3</offset>
+                    </left>
+                    <top>
+                        <parent>adv6pm</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+				</anchored>
 				<icon normal="12AM_Dark" pressed="12AM_Dark_down" />
 				<tooltip textres="desktop_adv12am_tooltip" />
 				<script>
@@ -578,7 +944,22 @@
 				</script>
 			</buttoncontrol>
 			<buttoncontrol name="openevents">
-				<anchored to="adv12am" position="righthigh" offset="2,0" width="20" height="20" />
+				<anchored>
+                    <left>
+                        <parent>adv12am</parent>
+                        <anchor>right</anchor>
+                        <offset>3</offset>
+                    </left>
+                    <top>
+                        <parent>adv12am</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+				</anchored>
 				<icon normal="add_logentry" pressed="add_logentry_down" />
 				<tooltip textres="desktop_openevents_tooltip" />
 				<script>
@@ -593,7 +974,22 @@
 				</script>
 			</buttoncontrol>
 			<buttoncontrol name="openreminders">
-			<anchored to="openevents" position="righthigh" offset="2,0" width="20" height="20" />
+				<anchored>
+                    <left>
+                        <parent>openevents</parent>
+                        <anchor>right</anchor>
+                        <offset>3</offset>
+                    </left>
+                    <top>
+                        <parent>openevents</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+				</anchored>
 				<icon normal="reminder_button" pressed="reminder_button_down" />
 				<tooltip textres="desktop_openreminders_tooltip" />
 				<script>
@@ -608,7 +1004,22 @@
 				</script>
 			</buttoncontrol>
 			<buttoncontrol name="opentravelmanager">
-				<anchored to="openreminders" position="righthigh" offset="2,0" width="20" height="20" />
+				<anchored>
+                    <left>
+                        <parent>openreminders</parent>
+                        <anchor>right</anchor>
+                        <offset>3</offset>
+                    </left>
+                    <top>
+                        <parent>openreminders</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+				</anchored>
 				<icon normal="atob_button" pressed="atob_button_down" />
 				<tooltip textres="desktop_opentravel_tooltip" />
 				<script>
@@ -622,7 +1033,22 @@
 				</script>
 			</buttoncontrol>
 			<button_checkbox name="checkweather">
-				<anchored to="opentravelmanager" position="righthigh" offset="0,0" width="20" height="20" />
+				<anchored>
+                    <left>
+                        <parent>opentravelmanager</parent>
+                        <anchor>right</anchor>
+                        <offset>1</offset>
+                    </left>
+                    <top>
+                        <parent>opentravelmanager</parent>
+                        <anchor>top</anchor>
+                        <offset>1</offset>
+                    </top>
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+				</anchored>
 				<values>
 					<maximum>1</maximum>
 				</values>
