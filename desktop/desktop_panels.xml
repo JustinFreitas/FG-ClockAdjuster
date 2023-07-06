@@ -5,7 +5,7 @@
 <root version="3.0">	
 	<panel name="date" modes="host">
 		<class>chattime</class>
-		<bounds>10,100,260,100</bounds>
+		<bounds>10,100,260,110</bounds>
 		<dynamic />
 		<locked />
 	</panel>
@@ -223,7 +223,7 @@
                     <left>
                         <parent>currentminute</parent>
                         <anchor>right</anchor>
-                        <offset>12</offset>
+                        <offset>10</offset>
                     </left>
                     <top>
                         <parent>currentminute</parent>
@@ -700,7 +700,22 @@
 			</buttoncontrol>
 			
 			<label name="addall">
-				<anchored to="addminute" position="righthigh" offset="8,-2" width="25" />
+				<anchored>
+                    <left>
+                        <parent>addminute</parent>
+                        <anchor>right</anchor>
+                        <offset>8</offset>
+                    </left>
+                    <top>
+                        <parent>addminute</parent>
+                        <anchor>top</anchor>
+                        <offset>0</offset>
+                    </top>
+                    <size>
+                        <width>25</width>
+                        <height>16</height>
+                    </size>
+				</anchored>
 				<static textres="desktop_panel_add" />
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>
