@@ -5,14 +5,26 @@
 <root version="3.0">	
 	<panel name="date" modes="host">
 		<class>chattime</class>
-		<bounds>10,100,260,110</bounds>
+        <anchored>
+            <left>
+                <anchor>left</anchor>
+                <offset>100</offset>
+            </left>
+            <top>
+                <anchor>top</anchor>
+                <offset>100</offset>
+            </top>
+            <size>
+                <width>260</width>
+                <height>97</height>
+            </size>
+        </anchored>
 		<dynamic />
 		<locked />
 	</panel>
 
 	<windowclass name="chattime">
 		<frame>recordsheet</frame>
-		<size width="260" height="110" />
 		<noclose />
 		<sheetdata>
 			<genericcontrol name="topleftanchor">
@@ -31,12 +43,12 @@
                     <left>
                         <parent>topleftanchor</parent>
                         <anchor>right</anchor>
-                        <offset>12</offset>
+                        <offset>11</offset>
                     </left>
                     <top>
                         <parent>topleftanchor</parent>
                         <anchor>bottom</anchor>
-                        <offset>9</offset>
+                        <offset>8</offset>
                     </top>
                     <size>
                         <width>210</width>
