@@ -66,7 +66,7 @@
                         <height>18</height>
                     </size>
 				</anchored>
-                <static>Clock Adjuster v2.4.5 FGC/FGU</static>
+                <static>Clock Adjuster v2.4.6 FGC/FGU</static>
 				<script>
 					function onDoubleClick()
 						TimeManager.outputDateAndTime();
