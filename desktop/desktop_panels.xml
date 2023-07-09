@@ -36,10 +36,6 @@
                 <width>260</width>
                 <height>99</height>
             </maximum>
-            <!-- <dynamic>
-                <hostcontrol />
-                <resize>both</resize>
-            </dynamic> -->
         </sizelimits>
 		<sheetdata>
 			<genericcontrol name="topleftanchor">
