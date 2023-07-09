@@ -26,6 +26,21 @@
 	<windowclass name="chattime">
 		<frame>recordsheet</frame>
 		<noclose />
+        <sizelimits>
+            <!-- Force old implementations into new size -->
+            <minimum>
+                <width>260</width>
+                <height>97</height>
+            </minimum>
+            <maximum>
+                <width>260</width>
+                <height>97</height>
+            </maximum>
+            <!-- <dynamic>
+                <hostcontrol />
+                <resize>both</resize>
+            </dynamic> -->
+        </sizelimits>
 		<sheetdata>
 			<genericcontrol name="topleftanchor">
 				<anchored>
