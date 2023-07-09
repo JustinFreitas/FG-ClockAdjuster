@@ -16,7 +16,7 @@
             </top>
             <size>
                 <width>260</width>
-                <height>98</height>
+                <height>99</height>
             </size>
         </anchored>
 		<dynamic />
@@ -30,11 +30,11 @@
             <!-- Force old implementations into new size -->
             <minimum>
                 <width>260</width>
-                <height>98</height>
+                <height>99</height>
             </minimum>
             <maximum>
                 <width>260</width>
-                <height>98</height>
+                <height>99</height>
             </maximum>
             <!-- <dynamic>
                 <hostcontrol />
