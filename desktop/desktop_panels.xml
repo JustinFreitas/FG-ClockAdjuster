@@ -856,9 +856,13 @@
 
 					function onInit()
 						local sRuleset = User.getRulesetName();
-						bIsbShort = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
+						bIsbShort = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "OSE2";
 						if bIsbShort then
-							setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT)) or 0);
+                            local nShortRestMinutes = tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT)) or 0;
+                            if sRuleset == "OSE2" then
+                                nShortRestMinutes = 10;
+                            end
+							setValue(nShortRestMinutes);
 							OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT, onOptionChanged);
 						else
 							setVisible(false);
@@ -866,10 +870,15 @@
 					end
 
 					function onOptionChanged()
-						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT)) or 0);
+                        local nShortRestMinutes = tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT)) or 0;
+                        if sRuleset == "OSE2" then
+                            nShortRestMinutes = 10;
+                        end
+                        setValue(nShortRestMinutes);
 					end
 
 					function onDoubleClick()
+                        TimeManager.bShortRestDoubleClick = true;
 						local nMinutes = getValue() or 0;
 						local nRounds = nMinutes * 10;
 						TimeManager.processTimeRoundsOption(nRounds);
@@ -882,6 +891,7 @@
 						end
 						
 						TimeManager.onUpdateAddControl();
+                        TimeManager.bShortRestDoubleClick = false;
 					end
 				</script>
 			</basicnumber>

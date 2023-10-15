@@ -26,9 +26,11 @@ CLOCKADJUSTER_LONG_OPTIONS = "1|4|8|9|10|11|12|24|36|48";
 CLOCKADJUSTER_SHORT_OPTIONS = "1|5|10|15|20|25|30|45|60|90|120";
 OFF = "off";
 ON = "on";
+RULESET = "";
 SKIP_REMINDER_ON_ADVANCE_TIME_BTN = "SKIP_REMINDER_ON_ADVANCE_TIME_BTN";
 
 local bCalendarNotInstalledNoticePosted;
+bShortRestDoubleClick = false;
 bTimeAdvancedByAdvanceTimeButtonPress = false;
 
 function onInit()
@@ -55,6 +57,8 @@ function onInit()
 
     OptionsManager.registerOption2(SKIP_REMINDER_ON_ADVANCE_TIME_BTN, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_SKIP_REMINDER_ON_ADVANCE_TIME_BTN", "option_entry_cycler",
         { labels = "option_val_on", values = ON, baselabel = "option_val_off", baseval = OFF, default = OFF });
+
+    RULESET = User.getRulesetName();
 end
 
 function initializeNotificationMechanism()
@@ -186,7 +190,8 @@ function onTimeChangedEvent(nodeEvent, sName, nCompleted, nVisibleAll, nEventMin
 end
 
 function onTimeChangedReminder(nodeReminder, sName, nRepeatTime, nReminderCycle, nVisibleAll, nActive)
-    if bTimeAdvancedByAdvanceTimeButtonPress and checkSkipReminderOnAdvanceTimeButton() then
+    if (RULESET == "OSE2" and bShortRestDoubleClick and checkSkipReminderOnAdvanceTimeButton() and string.find(sName, "Rest Turn"))
+        or (bTimeAdvancedByAdvanceTimeButtonPress and checkSkipReminderOnAdvanceTimeButton()) then
         TimeManager.setStartTimeComponents(nodeReminder);
     else
         if nActive == 1 and isTimeGreaterThan(nodeReminder, nRepeatTime, nReminderCycle) then
