@@ -24,8 +24,12 @@ CLOCKADJUSTER_MONTHS_OPTIONS = "1|2|3|4|5|6|7|8|9|10|11";
 CLOCKADJUSTER_YEARS_OPTIONS = "1|2|3|4|5|6|7|8|9|10|15|20|25|50|75|100|150|200|250|500";
 CLOCKADJUSTER_LONG_OPTIONS = "1|4|8|9|10|11|12|24|36|48";
 CLOCKADJUSTER_SHORT_OPTIONS = "1|5|10|15|20|25|30|45|60|90|120";
+OFF = "off";
+ON = "on";
+SKIP_REMINDER_ON_ADVANCE_TIME_BTN = "SKIP_REMINDER_ON_ADVANCE_TIME_BTN";
 
 local bCalendarNotInstalledNoticePosted;
+local bTimeAdvancedByAdvanceTimeButtonPress = false;
 
 function onInit()
 	initializeNotificationMechanism();
@@ -48,6 +52,9 @@ function onInit()
 
 	OptionsManager.registerOption2("TIMEROUNDS", false, "option_header_CLOCKADJUSTER", "opt_lab_time_rounds", "option_entry_cycler",
 		{ labels = "enc_opt_time_rounds_slow", values = "slow", baselabel = "enc_opt_time_rounds_fast", baseval = "fast", default = "fast" });
+
+    OptionsManager.registerOption2(SKIP_REMINDER_ON_ADVANCE_TIME_BTN, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_SKIP_REMINDER_ON_ADVANCE_TIME_BTN", "option_entry_cycler",
+        { labels = "option_val_on", values = ON, baselabel = "option_val_off", baseval = OFF, default = OFF });
 end
 
 function initializeNotificationMechanism()
@@ -57,6 +64,10 @@ function initializeNotificationMechanism()
 		DB.deleteNode("calendar.dateinminutesstring"); -- clean up after old mechanism, no longer needed.
 		DB.setValue(CAL_CLOCKADJUSTERNOTIFY, "number", 0); -- initialize the new notification mechanism
 	end
+end
+
+function checkSkipReminderOnAdvanceTimeButton()
+	return OptionsManager.isOption(SKIP_REMINDER_ON_ADVANCE_TIME_BTN, ON);
 end
 
 --- Timer Functions
@@ -175,16 +186,20 @@ function onTimeChangedEvent(nodeEvent, sName, nCompleted, nVisibleAll, nEventMin
 end
 
 function onTimeChangedReminder(nodeReminder, sName, nRepeatTime, nReminderCycle, nVisibleAll, nActive)
-	if nActive == 1 and isTimeGreaterThan(nodeReminder, nRepeatTime, nReminderCycle) then
-		local nDate = CalendarManager.getCurrentDateString();
-		local nTime = CalendarManager.getCurrentTimeString();
-		local nDateAndTime = "" .. nTime .. " " .. nDate .. "";
-		local msg = {font = "reference-r", icon = "clock_icon", text = "[" .. nDateAndTime .. "] " .. sName .. "", secret = nVisibleAll == 0};
-		Comm.deliverChatMessage(msg);
-		if TableManager.findTable(sName) then
-			TableManager.processTableRoll("", sName);
-		end
-	end
+    if bTimeAdvancedByAdvanceTimeButtonPress and checkSkipReminderOnAdvanceTimeButton() then
+        TimeManager.setStartTimeComponents(nodeReminder);
+    else
+        if nActive == 1 and isTimeGreaterThan(nodeReminder, nRepeatTime, nReminderCycle) then
+            local nDate = CalendarManager.getCurrentDateString();
+            local nTime = CalendarManager.getCurrentTimeString();
+            local nDateAndTime = "" .. nTime .. " " .. nDate .. "";
+            local msg = {font = "reference-r", icon = "clock_icon", text = "[" .. nDateAndTime .. "] " .. sName .. "", secret = nVisibleAll == 0};
+            Comm.deliverChatMessage(msg);
+            if TableManager.findTable(sName) then
+                TableManager.processTableRoll("", sName);
+            end
+        end
+    end
 end
 
 function rtrim(s) return (s:gsub("%s*$", "")) end
@@ -439,20 +454,21 @@ function TravelByPace(window)
 end
 
 function advanceTime(sTime, window)
-	local nCurrentHour = DB.getValue(CAL_CUR_HOUR, 0);
-	local nCurrentMinute = DB.getValue(CAL_CUR_MIN, 0);
-
-	local nAdvTo = 6 -- Default, 6am.
-	if sTime == "12pm" then
-		nAdvTo = 12
-	elseif sTime == "6pm" then
-		nAdvTo = 18
-	elseif sTime == "12am" then
-		nAdvTo = 0
-	end
-
 	if getCurrentDate() then
-		if nCurrentHour >= nAdvTo then
+        bTimeAdvancedByAdvanceTimeButtonPress = true;
+        local nCurrentHour = DB.getValue(CAL_CUR_HOUR, 0);
+        local nCurrentMinute = DB.getValue(CAL_CUR_MIN, 0);
+    
+        local nAdvTo = 6 -- Default, 6am.
+        if sTime == "12pm" then
+            nAdvTo = 12
+        elseif sTime == "6pm" then
+            nAdvTo = 18
+        elseif sTime == "12am" then
+            nAdvTo = 0
+        end
+    
+        if nCurrentHour >= nAdvTo then
 			DB.setValue(TimeManager.CAL_CUR_HOUR, "number", nAdvTo);
 			CalendarManager.adjustDays(1);
 			if nCurrentMinute >= 1 then
@@ -469,5 +485,6 @@ function advanceTime(sTime, window)
 		TimeManager.checkAndOutputDate();
 		CalendarManager.outputTime();
 		TimeManager.onUpdateAddControl();
+        bTimeAdvancedByAdvanceTimeButtonPress = false;
 	end
 end
