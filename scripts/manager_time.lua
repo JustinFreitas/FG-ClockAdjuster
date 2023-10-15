@@ -29,7 +29,7 @@ ON = "on";
 SKIP_REMINDER_ON_ADVANCE_TIME_BTN = "SKIP_REMINDER_ON_ADVANCE_TIME_BTN";
 
 local bCalendarNotInstalledNoticePosted;
-local bTimeAdvancedByAdvanceTimeButtonPress = false;
+bTimeAdvancedByAdvanceTimeButtonPress = false;
 
 function onInit()
 	initializeNotificationMechanism();
@@ -315,6 +315,7 @@ function onUpdateAddControl()
 	local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 	nCurrentRound = nCurrentRound % 10
 	DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+    bTimeAdvancedByAdvanceTimeButtonPress = false;
 end
 
 function checkAndProcessWeather(bCheckWeather)
@@ -458,7 +459,7 @@ function advanceTime(sTime, window)
         bTimeAdvancedByAdvanceTimeButtonPress = true;
         local nCurrentHour = DB.getValue(CAL_CUR_HOUR, 0);
         local nCurrentMinute = DB.getValue(CAL_CUR_MIN, 0);
-    
+
         local nAdvTo = 6 -- Default, 6am.
         if sTime == "12pm" then
             nAdvTo = 12
@@ -467,7 +468,7 @@ function advanceTime(sTime, window)
         elseif sTime == "12am" then
             nAdvTo = 0
         end
-    
+
         if nCurrentHour >= nAdvTo then
 			DB.setValue(TimeManager.CAL_CUR_HOUR, "number", nAdvTo);
 			CalendarManager.adjustDays(1);
@@ -484,7 +485,6 @@ function advanceTime(sTime, window)
 		TimeManager.checkAndProcessWeather(window.checkweather.getValue());
 		TimeManager.checkAndOutputDate();
 		CalendarManager.outputTime();
-		TimeManager.onUpdateAddControl();
-        bTimeAdvancedByAdvanceTimeButtonPress = false;
+		TimeManager.onUpdateAddControl(); -- Sets bTimeAdvancedByAdvanceTimeButtonPress to false
 	end
 end

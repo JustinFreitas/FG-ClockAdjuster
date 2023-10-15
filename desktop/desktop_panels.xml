@@ -173,6 +173,7 @@
 							return false;
 						end
 
+                        TimeManager.bTimeAdvancedByAdvanceTimeButtonPress = true;
 						CalendarManager.adjustHours(n);
 						return true;
 					end
@@ -236,6 +237,7 @@
 							return false;
 						end
 						
+                        TimeManager.bTimeAdvancedByAdvanceTimeButtonPress = true;
 						CalendarManager.adjustMinutes(n);
 						return true;
 					end
@@ -299,6 +301,7 @@
 							return false;
 						end
 						
+                        TimeManager.bTimeAdvancedByAdvanceTimeButtonPress = true;
 						CalendarManager.adjustDays(n);
 						return true;
 					end
@@ -343,6 +346,7 @@
 							return false;
 						end
 						
+                        TimeManager.bTimeAdvancedByAdvanceTimeButtonPress = true;
 						CalendarManager.adjustMonths(n);
 						return true;
 					end
@@ -387,6 +391,7 @@
 							return false;
 						end
 						
+                        TimeManager.bTimeAdvancedByAdvanceTimeButtonPress = true;
 						CalendarManager.adjustYears(n);
 						return true;
 					end
@@ -1612,6 +1617,7 @@
 
 					function onDoubleClick()
 						TimeManager.TravelByPace(window);
+                        TimeManager.bTimeAdvancedByAdvanceTimeButtonPress = false;
 					end
 				</script>
 			</basicnumber>
